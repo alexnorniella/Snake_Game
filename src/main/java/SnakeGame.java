@@ -95,6 +95,7 @@ public class SnakeGame extends JPanel implements ActionListener, KeyListener {
             g.setColor(Color.white);
             g.setFont(new Font("Arial", Font.BOLD, 20));
             g.drawString("Game Over, Your Score is:  " + String.valueOf(snakeBody.size()), boardWidth / 3, boardHeight / 2);
+            g.drawString("Press R to Restart", boardWidth / 3, boardHeight / 2 + 30);
         }
         else {
             g.drawString("Score: " + String.valueOf(snakeBody.size()), tileSize - 16, tileSize);
@@ -147,6 +148,29 @@ public class SnakeGame extends JPanel implements ActionListener, KeyListener {
 
     }
 
+    // Reset Method
+    public void resetGame(){
+        // Reset position
+        snakeHead = new Tile(5,5);
+        snakeBody.clear();
+
+        // Reset the velocities - so play can start again the movement
+        velocityX = 0;
+        velocityY = 0;
+
+        // Reposition the food
+        placeFood();
+
+        //Reset game over status
+        gameOver = false;
+
+        //Restart the game loop
+        gameLoop.start();
+
+
+
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         move();
@@ -164,18 +188,24 @@ public class SnakeGame extends JPanel implements ActionListener, KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_UP && velocityY != 1) {
-            velocityX = 0;
-            velocityY = -1;
-        } else if (e.getKeyCode() == KeyEvent.VK_DOWN & velocityY != -1) {
-            velocityX = 0;
-            velocityY = 1;
-        } else if (e.getKeyCode() == KeyEvent.VK_LEFT && velocityX != 1) {
-            velocityX = -1;
-            velocityY = 0;
-        } else if (e.getKeyCode() == KeyEvent.VK_RIGHT && velocityX != -1) {
-            velocityX = 1;
-            velocityY = 0;
+        if (gameOver && e.getKeyCode() == KeyEvent.VK_R){
+            resetGame();
+        }
+
+        if(!gameOver) {
+            if (e.getKeyCode() == KeyEvent.VK_UP && velocityY != 1) {
+                velocityX = 0;
+                velocityY = -1;
+            } else if (e.getKeyCode() == KeyEvent.VK_DOWN & velocityY != -1) {
+                velocityX = 0;
+                velocityY = 1;
+            } else if (e.getKeyCode() == KeyEvent.VK_LEFT && velocityX != 1) {
+                velocityX = -1;
+                velocityY = 0;
+            } else if (e.getKeyCode() == KeyEvent.VK_RIGHT && velocityX != -1) {
+                velocityX = 1;
+                velocityY = 0;
+            }
         }
 
     }
